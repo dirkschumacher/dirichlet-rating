@@ -1,0 +1,19 @@
+{
+  "name": "dirichlet-rating",
+  "version": "0.0.1",
+  "description": "Gives uncertainty intervals around star-like ranking systems",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js | tap-min"
+  },
+  "author": "Dirk Schumacher <mail@dirk-schumacher.net>",
+  "license": "MIT",
+  "dependencies": {
+    "lib-r-math.js": "^1.0.86",
+    "quantile": "^1.0.2"
+  },
+  "devDependencies": {
+    "tap-min": "^2.0.0",
+    "tape": "^4.11.0"
+  }
+}
