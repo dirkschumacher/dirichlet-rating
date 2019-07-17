@@ -1,6 +1,7 @@
 "use strict"
 
-const {Gamma, Multinomial,  rng: { MersenneTwister, timeseed, normal: { AhrensDieter } }} = require("lib-r-math.js")
+// ,  rng: { MersenneTwister, timeseed, normal: { AhrensDieter } }
+const {Gamma, Multinomial} = require("lib-r-math.js")
 
 const quantile = require("quantile")
 
