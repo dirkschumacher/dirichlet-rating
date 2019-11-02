@@ -13,7 +13,7 @@ A restaurant with one 5 star rating has a mean rating of 5. Is this better than 
 
 Compute a uncertainty intervals around the _mean_ rating of a restaurant to give a sense about how reliable that estimate is.
 
-The method follows the idea of Evan Miller, but relies on pure sampling from a multinomial distribution: https://www.evanmiller.org/ranking-items-with-star-ratings.html
+The method is inspired by the blog post of [Evan Miller](https://www.evanmiller.org/ranking-items-with-star-ratings.html), but relies on simple random sampling from the posterior dirichlet distribution for the intervals.
 
 ```js
 // a rating is an array of the sum of stars your item received
@@ -27,34 +27,33 @@ const item = [0, 0, 0, 0, 1]
 const prior = [1, 1, 1, 1, 1]
 
 // the result of this method is now a combination of your observed rating
-// and the prior. The more votes your observe, the less the prior plays a role
-// this allows you to also display mean rating even for items with very few ratings
+// and the prior. The more votes you observe, the less the prior plays a role
+// this allows you to also display mean ratings even for items with very few votes
 const rating = require("dirichlet-rating")
 console.log(rating(item, prior))
 
 // this results in the following output
-{ 
-  lowerInterval: 1.6666666666666667,
-  pointEstimate: 3.3333333333333335,
-  upperInterval: 4.833333333333333,
+{
+  lowerInterval: 2.273630700081006,
+  pointEstimate: 3.333333333333333,
+  upperInterval: 4.4033090113600615,
   alpha: 0.05 
 }
 
-// in 95% of the time your mean rating for this item
+// in 95% of the time your mean rating for this item is
 // between `lowerInterval` and `upperInterval`
-// the median value (point estimate) of the mean rating for this item
-// is `pointEstimate`
-// your notice that there is a lot of uncertainty around the items true rating
+// the mean value is the `pointEstimate`
+// you notice that there is a lot of uncertainty around the items true rating
 
 // now if you observe 10 more 5 star ratings
 console.log(rating(item.map(x => x * 10), prior))
-{ 
-  lowerInterval: 3.2666666666666666,
-  pointEstimate: 4.4,
-  upperInterval: 5,
-  alpha: 0.05 
+{
+  lowerInterval: 3.6782580809383103,
+  pointEstimate: 4.333333333333333,
+  upperInterval: 4.814010758536736,
+  alpha: 0.05
 }
-// we can for example savely state that the item's mean rating is probably
+// we can for example state that the item's mean rating is probably
 // not less that 3.2
 ```
 
@@ -75,9 +74,9 @@ For ranking purposes one can either use the `pointEstimate` or one of the interv
 
 ### Ze Math
 
-We assume the rating originates from a multinomial distribution with probabilities coming from the posteriori of a dirichlet distribution. The posteriori dirichlet is just the prior plus the observed votes. It currently relies on pure random sampling. There might be a smarter way or pure closed form solution?
+We assume the rating originates from a multinomial distribution with probabilities from a dirichlet distribution. Given a user specified-prior for the dirichlet distribution, we derive the posterior distribution by simply adding the prior and the observed counts. We then sample from the posterior dirichlet distribution to calculate a set of expected ratings.
 
-... TODO
+The the two intervals are the $\alpha / 2$ and $1 - \alpha / 2$ quantiles of the random sample of generated mean ratings.
 
 # References
 

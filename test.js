@@ -31,13 +31,13 @@ test("some checks against R", (t) => {
   const res1 = rating([0, 1, 1, 0, 9], [1, 1, 1, 1, 1])
   const res2 = rating([0, 1, 1, 0, 9], [10, 1, 1, 5, 10])
 
-  t.true(Math.abs(res1.lowerInterval - 3.1250) < 0.1)
-  t.true(Math.abs(res1.pointEstimate - 4.1250) < 0.1)
-  t.true(Math.abs(res1.upperInterval - 4.8125) < 0.1)
+  t.true(Math.abs(res1.lowerInterval - 3.354476) < 0.1)
+  t.true(Math.abs(res1.pointEstimate - 4.0625) < 0.1)
+  t.true(Math.abs(res1.upperInterval - 4.615725) < 0.1)
 
-  t.true(Math.abs(res2.lowerInterval - 2.789474) < 0.1)
+  t.true(Math.abs(res2.lowerInterval - 2.991626) < 0.1)
   t.true(Math.abs(res2.pointEstimate - 3.552632) < 0.1)
-  t.true(Math.abs(res2.upperInterval - 4.210526 ) < 0.1)
+  t.true(Math.abs(res2.upperInterval - 4.058780) < 0.1)
 
   t.end()
 })

@@ -1,7 +1,6 @@
 "use strict"
 
-// ,  rng: { MersenneTwister, timeseed, normal: { AhrensDieter } }
-const {Gamma, Multinomial} = require("lib-r-math.js")
+const {Gamma} = require("lib-r-math.js")
 
 const quantile = require("quantile")
 
@@ -41,26 +40,22 @@ const dirichletRating = (observed, alphaPrior, randomSamples = 1000, alpha = 0.0
   for (let i = 0; i < alphaPost.length; i++) {
     alphaPost[i] += observed[i]
   }
-  const totalN = sum(alphaPost)
 
-  // super slow
-  // but now we always have the same seed
-  //const rng = new MersenneTwister(timeseed())
-  //const ad = new AhrensDieter(rng)
+  const sum_alpha = sum(alphaPost);
+  const mean_rating = meanRating(alphaPost.map((x) => alphaPost.length * (x / sum_alpha)));
   const g = Gamma()
-  const mn = Multinomial()
   let ratings = []
   for (let i = 0; i < randomSamples; i++) {
     const rndDirichlet = randomDirichlet(g, alphaPost)
-    const rating = meanRating(mn.rmultinom(1, totalN, rndDirichlet))
+    const rating = sum(rndDirichlet.map((x, i) => (i + 1) * x))
     ratings.push(rating)
   }
   ratings.sort()
-  const qs = [alpha / 2.0, 0.5, 1.0 - alpha / 2.0].map(p => quantile(ratings, p))
+  const qs = [alpha / 2.0, 1.0 - alpha / 2.0].map(p => quantile(ratings, p))
   return {
     lowerInterval: qs[0],
-    pointEstimate: qs[1],
-    upperInterval: qs[2],
+    pointEstimate: mean_rating,
+    upperInterval: qs[1],
     alpha: alpha
   }
 }
