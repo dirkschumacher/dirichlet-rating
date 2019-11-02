@@ -78,6 +78,8 @@ We assume the rating originates from a multinomial distribution with probabiliti
 
 The the two intervals are the $\alpha / 2$ and $1 - \alpha / 2$ quantiles of the random sample of generated mean ratings.
 
+... TODO
+
 # References
 
 * https://en.wikipedia.org/wiki/Multinomial_distribution
